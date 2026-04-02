@@ -1,18 +1,50 @@
 import axios from "axios"
 
-const BASE_URL ='https://places.googleapis.com/v1/places:searchText'
+const pexelsApiKey = import.meta.env.VITE_PEXELS_API_KEY;
+const pexelsPhotoCache = new Map();
 
-const config={
-    headers:{
-        'Content-Type': 'application/json',
-        'X-Goog-Api-Key': import.meta.env.VITE_GOOGLE_PLACES_API_KEY,
-        'X-Goog-FieldMask': [
-            'places.photos',
-            'places.displayName',
-            'places.id'
-        ]
+export const getPlaceSuggestions = (input) =>
+  axios.get(
+    'https://nominatim.openstreetmap.org/search',
+    {
+      params: {
+        q: input,
+        format: 'jsonv2',
+        addressdetails: 1,
+        limit: 5,
+      }
     }
-}
+  )
 
-export const GetPlaceDetails=(data)=>axios.post(BASE_URL,data,config)
-export const PHOTO_REF_URL = `https://places.googleapis.com/v1/{NAME}/media?maxHeightPx=600&maxWidthPx=600&key=${import.meta.env.VITE_GOOGLE_PLACES_API_KEY}`;
+export async function getPexelsPhoto(query) {
+  const normalizedQuery = query?.trim();
+
+  if (!normalizedQuery || !pexelsApiKey) {
+    return null;
+  }
+
+  if (pexelsPhotoCache.has(normalizedQuery)) {
+    return pexelsPhotoCache.get(normalizedQuery);
+  }
+
+  try {
+    const response = await axios.get('https://api.pexels.com/v1/search', {
+      params: {
+        query: normalizedQuery,
+        per_page: 1,
+        orientation: 'landscape',
+      },
+      headers: {
+        Authorization: pexelsApiKey,
+      },
+    });
+
+    const photoUrl = response.data?.photos?.[0]?.src?.medium || response.data?.photos?.[0]?.src?.large || null;
+    pexelsPhotoCache.set(normalizedQuery, photoUrl);
+    return photoUrl;
+  } catch (error) {
+    console.error(error);
+    pexelsPhotoCache.set(normalizedQuery, null);
+    return null;
+  }
+}

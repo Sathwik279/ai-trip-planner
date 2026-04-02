@@ -1,26 +1,23 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-/* eslint-disable react/jsx-key */
 import React from 'react'
 import PlaceCardItem from './PlaceCardItem'
+import { getBestTimeToVisit } from '@/lib/trip'
 
 function PlacesToVisit({ trip }) {
   return (
     <div>
-      <h2 className='font-bold text-lg mt-10 mb-7'>Places to Visit</h2>
+      <h2 className='mb-7 mt-10 text-lg font-bold'>Places to Visit</h2>
       <div>
-        {trip.tripData && typeof trip.tripData.itinerary === 'object' ? (
+        {trip?.tripData && typeof trip.tripData.itinerary === 'object' ? (
           Object.entries(trip.tripData.itinerary).map(([day, info]) => (
             <div key={day} className='mt-5'>
-              <h3 className='font-medium text-lg'>{day}</h3>
-              <p className='font-medium text-sm text-orange-300'>{info.best_time_to_visit}</p>
-              <div className='grid md:grid-cols-2 gap-5'>
-                {info.places.map((place, index) => (
-                  <div key={index}>                   
-                    {/* <h2 className='font-normal text-md'>{place.placeName}</h2> */}
-                    <div className='my-3'>
-                       <PlaceCardItem place={place} />
-                    </div>
+              <h3 className='text-lg font-medium'>{day}</h3>
+              <p className='text-sm font-medium text-orange-400'>{getBestTimeToVisit(info)}</p>
+              {info?.theme ? <p className='mt-1 text-sm text-gray-500'>{info.theme}</p> : null}
+              <div className='grid gap-5 md:grid-cols-2'>
+                {(info?.places || []).map((place, index) => (
+                  <div key={index} className='my-3'>
+                    <PlaceCardItem place={place} />
                   </div>
                 ))}
               </div>

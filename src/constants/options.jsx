@@ -51,4 +51,43 @@ export const SelectBudgetOptions=[
 ]
 
 
-export const AI_PROMPT='Generate Travel Plan for Location : {location} for {totalDays} Days for {traveler} with a {budget} budget, Give me a Hotels options list with HotelName,Hotel address,Price, hotel image url,geo coordinates,rating,descriptions and suggest itinerary with placeName,Place Details,Place Image Url, Geo Coordinates,ticket Pricing,rating,Time travel each of the location for 3 days with each day plan with best time to visit in JSON format.'
+export const AI_PROMPT=`Generate a travel plan in valid JSON only.
+Destination: {location}
+Trip length: {totalDays} days
+Travelers: {traveler}
+Budget: {budget}
+
+Return this exact top-level structure:
+{
+  "tripDetails": {},
+  "hotelOptions": [
+    {
+      "hotelName": "",
+      "hotelAddress": "",
+      "price": "",
+      "hotelImageUrl": "",
+      "geoCoordinates": { "latitude": 0, "longitude": 0 },
+      "rating": "",
+      "descriptions": ""
+    }
+  ],
+  "itinerary": {
+    "day1": {
+      "theme": "",
+      "bestTimeToVisit": "",
+      "places": [
+        {
+          "placeName": "",
+          "placeDetails": "",
+          "placeImageUrl": "",
+          "geoCoordinates": { "latitude": 0, "longitude": 0 },
+          "ticketPricing": "",
+          "rating": "",
+          "timeTravel": ""
+        }
+      ]
+    }
+  }
+}
+
+Do not wrap the JSON in markdown fences.`;

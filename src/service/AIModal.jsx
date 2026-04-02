@@ -1,34 +1,67 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-  
-  const apiKey = import.meta.env.VITE_GOOGLE_GEMINI_API_KEY;
-  const genAI = new GoogleGenerativeAI(apiKey);
-  
-  const model = genAI.getGenerativeModel({
-    model: "gemini-2.0-flash-exp",
-  });
-  
-  const generationConfig = {
-    temperature: 1,
-    topP: 0.95,
-    topK: 40,
-    maxOutputTokens: 8192,
-    responseMimeType: "application/json",
-  };
-  
-    export const chatSession = model.startChat({
-      generationConfig,
-      history: [
-        {
-          role: "user",
-          parts: [
-            {text: "Generate Travel Plan for Location: Las Vegas, for 3 Days for Couple with a Cheap Budget, give me a Hotels option list with HotelName, Hotel Address, Price, Hotel Image URL, Geo Coordinates, Rating, Descriptions and Suggest Itinerary with PlaceName, Place Details, PlaceImageUrl, GeoCordinates, TicketPricing, Rating, Time Travel Each of the Location for 3 Days with each day plan with best time to visit in JSON Format.\n"},
-          ],
-        },
-        {
-          role: "model",
-          parts: [
-            {text: "```json\n{\n  \"tripDetails\": {\n    \"location\": \"Las Vegas\",\n    \"duration\": \"3 Days\",\n    \"budget\": \"Cheap\",\n    \"travelers\": \"Couple\"\n  },\n  \"hotelOptions\": [\n    {\n      \"hotelName\": \"Circus Circus Hotel & Casino\",\n      \"hotelAddress\": \"2880 S Las Vegas Blvd, Las Vegas, NV 89109\",\n      \"price\": \"$50 - $100 per night\",\n      \"hotelImageUrl\": \"https://www.circuscircus.com/wp-content/uploads/2018/05/circus-circus-hotel-casino-360.jpg\",\n      \"geoCoordinates\": {\n        \"latitude\": 36.1383,\n        \"longitude\": -115.1679\n      },\n      \"rating\": 3.8,\n       \"descriptions\": \"A budget-friendly option with a variety of entertainment, including a circus and amusement park. Rooms are basic but clean, and the location is on the Strip but towards the northern end.\"\n    },\n    {\n      \"hotelName\": \"Excalibur Hotel & Casino\",\n      \"hotelAddress\": \"3850 S Las Vegas Blvd, Las Vegas, NV 89109\",\n      \"price\": \"$60 - $120 per night\",\n      \"hotelImageUrl\": \"https://www.excalibur.com/content/dam/MGM/Excalibur/Property/Hotel/Exterior/excalibur-hotel-exterior-desktop-1920x1080.jpg\",\n      \"geoCoordinates\": {\n        \"latitude\": 36.0988,\n        \"longitude\": -115.1747\n      },\n      \"rating\": 4.0,\n      \"descriptions\": \"A castle-themed hotel offering a fun and whimsical experience. It has multiple restaurants, pools, and a variety of entertainment options. Rooms are standard but a good value for the price.\"\n    },\n        {\n      \"hotelName\": \"OYO Hotel & Casino Las Vegas\",\n      \"hotelAddress\": \"115 E Tropicana Ave, Las Vegas, NV 89109\",\n       \"price\": \"$40 - $90 per night\",\n      \"hotelImageUrl\": \"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1b/20/2a/bc/oyo-hotel-casino-las.jpg?w=700&h=-1&s=1\",\n       \"geoCoordinates\": {\n        \"latitude\": 36.0992,\n         \"longitude\": -115.1696\n      },\n     \"rating\": 3.5,\n     \"descriptions\": \"Formerly the Hooters Hotel, this hotel offers affordable rates and a convenient location near the Strip. It has a casual atmosphere and a few dining options. Rooms are basic but budget-friendly.\"\n    }\n  ],\n  \"itinerary\": {\n    \"day1\": {\n      \"theme\": \"Exploring the Strip and Free Attractions\",\n      \"bestTimeToVisit\": \"Morning to Late Evening\",\n       \"places\": [\n        {\n          \"placeName\": \"Bellagio Conservatory & Botanical Garden\",\n          \"placeDetails\": \"A stunning indoor botanical garden that changes themes seasonally. Free to enter and a perfect photo opportunity.\",\n          \"placeImageUrl\": \"https://www.bellagio.com/content/dam/MGM/Bellagio/Property/Conservatory/Bellagio-Conservatory-Botanical-Gardens-New-Years-Desktop-1920x1080.jpg\",\n          \"geoCoordinates\": {\n            \"latitude\": 36.1125,\n            \"longitude\": -115.1744\n          },\n          \"ticketPricing\": \"Free\",\n          \"rating\": 4.7,\n          \"timeTravel\": \"Hotel to Bellagio: 15-20 mins using public transportation\"\n        },\n         {\n          \"placeName\": \"Fountains of Bellagio\",\n          \"placeDetails\": \"A spectacular choreographed water show set to music. Shows occur every 30 minutes in the afternoon and every 15 minutes in the evening.  Located in front of the Bellagio hotel.\",\n          \"placeImageUrl\": \"https://www.bellagio.com/content/dam/MGM/Bellagio/Entertainment/Fountains/bellagio-fountains-desktop-1920x1080.jpg\",\n           \"geoCoordinates\": {\n            \"latitude\": 36.1128,\n            \"longitude\": -115.1738\n           },\n          \"ticketPricing\": \"Free\",\n          \"rating\": 4.8,\n          \"timeTravel\": \"Walkable from Conservatory & Botanical Garden\"\n        },\n        {\n          \"placeName\": \"The LINQ Promenade\",\n           \"placeDetails\": \"An open-air shopping, dining, and entertainment district with the High Roller Observation Wheel as its centerpiece. Great for browsing and enjoying the atmosphere.\",\n          \"placeImageUrl\": \"https://www.caesars.com/content/dam/clv/Property/linq-promenade/Overview/thelinq-promenade-overview-desktop-1920x1080.jpg\",\n          \"geoCoordinates\": {\n            \"latitude\": 36.1173,\n            \"longitude\": -115.1691\n          },\n           \"ticketPricing\": \"Free to walk around, attractions have fees\",\n          \"rating\": 4.5,\n          \"timeTravel\": \"Walkable from Bellagio Fountains\"\n\n        },\n          {\n           \"placeName\": \"Mirage Volcano\",\n            \"placeDetails\": \"A free volcanic eruption show with fire, smoke, and rumbling effects. Show times vary, check in advance.\",\n             \"placeImageUrl\": \"https://www.mirage.com/content/dam/MGM/Mirage/Property/Entertainment/Volcano/mirage-volcano-desktop-1920x1080.jpg\",\n            \"geoCoordinates\": {\n              \"latitude\": 36.1213,\n              \"longitude\": -115.1722\n            },\n            \"ticketPricing\": \"Free\",\n            \"rating\": 4.6,\n             \"timeTravel\": \"Walkable from The LINQ Promenade\"\n          }\n      ]\n    },\n     \"day2\": {\n      \"theme\": \"Downtown and Fremont Street Experience\",\n      \"bestTimeToVisit\": \"Afternoon to Late Evening\",\n       \"places\": [\n        {\n          \"placeName\": \"Fremont Street Experience\",\n           \"placeDetails\": \"A pedestrian mall in Downtown Las Vegas featuring a massive video screen canopy, free live music, and street performers.\",\n           \"placeImageUrl\": \"https://fremontstreetexperience.com/wp-content/uploads/2023/03/FSE-Hero-1920x1080.jpg\",\n           \"geoCoordinates\": {\n            \"latitude\": 36.1701,\n            \"longitude\": -115.1402\n          },\n          \"ticketPricing\": \"Free\",\n           \"rating\": 4.6,\n          \"timeTravel\": \"Hotel to Downtown: 30-40 mins by bus or ride-sharing\"\n        },\n        {\n          \"placeName\": \"Container Park\",\n          \"placeDetails\": \"An open-air shopping and dining area made of shipping containers, featuring a playground for adults and children. Offers unique shops and restaurants.\",\n            \"placeImageUrl\": \"https://downtowncontainerpark.com/wp-content/uploads/2017/04/Container-Park-Exterior-01-1440x1080.jpg\",\n           \"geoCoordinates\": {\n            \"latitude\": 36.1661,\n            \"longitude\": -115.1397\n           },\n          \"ticketPricing\": \"Free to enter, individual costs for shops/restaurants\",\n          \"rating\": 4.4,\n           \"timeTravel\": \"Walkable from Fremont Street Experience\"\n        },\n        {\n          \"placeName\": \"Golden Nugget Hotel\",\n          \"placeDetails\": \"Known for its famous shark tank pool, even if you are not a guest it is a fun place to see the sharks and enjoy the old Vegas charm. \",\n           \"placeImageUrl\": \"https://goldennugget.com/las-vegas/images/main.jpg\",\n          \"geoCoordinates\": {\n             \"latitude\": 36.1697,\n            \"longitude\": -115.1415\n            },\n          \"ticketPricing\": \"Free to visit hotel areas\",\n          \"rating\": 4.3,\n           \"timeTravel\": \"Walkable from Container Park\"\n        },\n        {\n          \"placeName\": \"Street Performers on Fremont Street\",\n          \"placeDetails\": \"Enjoy the quirky and eccentric street performers, adding to the lively atmosphere of the Fremont Street Experience.\",\n           \"placeImageUrl\": \"https://i0.wp.com/lasvegastravelguides.com/wp-content/uploads/2023/03/fremont-street-performers-las-vegas.jpg?fit=1440%2C960&ssl=1\",\n           \"geoCoordinates\": {\n            \"latitude\": 36.1701,\n            \"longitude\": -115.1402\n           },\n           \"ticketPricing\": \"Free (tips are appreciated)\",\n          \"rating\": 4.5,\n          \"timeTravel\": \"Located within Fremont Street Experience\"\n        }\n      ]\n    },\n     \"day3\": {\n        \"theme\": \"South Strip & Departure\",\n        \"bestTimeToVisit\": \"Morning to Afternoon\",\n        \"places\": [\n        {\n          \"placeName\": \"Welcome to Fabulous Las Vegas Sign\",\n          \"placeDetails\": \"A classic Las Vegas landmark and a must-visit for a photo opportunity.\",\n          \"placeImageUrl\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Las_Vegas_Welcome_Sign_Night.jpg/1200px-Las_Vegas_Welcome_Sign_Night.jpg\",\n          \"geoCoordinates\": {\n            \"latitude\": 36.0828,\n             \"longitude\": -115.1701\n           },\n           \"ticketPricing\": \"Free\",\n          \"rating\": 4.6,\n          \"timeTravel\": \"Hotel to Sign: 15-20 mins by bus or ride-sharing\"\n        },\n        {\n          \"placeName\": \"M&M's World\",\n          \"placeDetails\": \"A multi-story retail store with colorful M&M's merchandise and interactive displays.\",\n          \"placeImageUrl\": \"https://www.mmworld.com/wp-content/uploads/2023/03/2023_LV_EXT_Hero.jpg\",\n          \"geoCoordinates\": {\n             \"latitude\": 36.1054,\n              \"longitude\": -115.1717\n            },\n          \"ticketPricing\": \"Free to enter, purchases have a fee\",\n          \"rating\": 4.3,\n          \"timeTravel\": \"10-15 mins bus or ride-sharing from Welcome Sign\"\n        },\n         {\n          \"placeName\": \"Explore Hotel Themes\",\n          \"placeDetails\": \"Take some time to explore the themed hotels on the south strip, such as the New York New York, or Luxor\",\n           \"placeImageUrl\": \"https://i.insider.com/5a0b7d80306e97d0038b45e8?width=1133&format=jpeg\",\n          \"geoCoordinates\": {\n           \"latitude\": 36.1024,\n           \"longitude\": -115.1715\n            },\n            \"ticketPricing\": \"Free to enter the hotels\",\n          \"rating\": 4.2,\n          \"timeTravel\": \"Walkable from M&M's World\"\n        }\n      ]\n    }\n  }\n}\n```"},
-          ],
-        },
-      ],
+const apiKey = import.meta.env.VITE_GROQ_API_KEY;
+const modelName = import.meta.env.VITE_GROQ_MODEL || "llama-3.1-8b-instant";
+const REQUEST_TIMEOUT_MS = 20000;
+
+async function generateTrip(prompt) {
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
+  let response;
+
+  try {
+    response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: modelName,
+        temperature: 0.7,
+        response_format: { type: "json_object" },
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are a travel planner. Return only valid JSON matching the user's requested schema.",
+          },
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+      }),
+      signal: controller.signal,
     });
+  } catch (error) {
+    if (error.name === "AbortError") {
+      const timeoutError = new Error("Groq request timed out. Please try again.");
+      timeoutError.status = 408;
+      throw timeoutError;
+    }
+
+    throw error;
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
+
+  if (!response.ok) {
+    const errorBody = await response.text();
+    const error = new Error(errorBody || "Groq request failed");
+    error.status = response.status;
+    throw error;
+  }
+
+  const data = await response.json();
+  const text = data?.choices?.[0]?.message?.content ?? "";
+
+  return {
+    response: {
+      text: () => text,
+    },
+  };
+}
+
+export const chatSession = {
+  sendMessage: generateTrip,
+};
